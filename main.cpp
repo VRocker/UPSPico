@@ -16,8 +16,30 @@ void sig_handler(int signo)
 	g_isRunning = false;
 }
 
+void daemonise( void )
+{
+	int pid = 0;
+
+	if ( (pid = fork()) < 0 )
+	{
+		// It forking failed!
+		exit( 1 );
+	}
+
+	if ( pid > 0 )
+		exit( 0 );
+	else
+	{
+		// Daemonising
+		setsid();
+	}
+}
+
 int main()
 {
+	// Throw the application in the background
+	daemonise();
+
 	// Handle signals
 	signal(SIGTERM, sig_handler);
 	signal(SIGINT, sig_handler);
