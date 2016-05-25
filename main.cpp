@@ -49,6 +49,13 @@ int main()
 	// Setup the thing that shouts to shutdown
 	gpiohandler::getSingleton()->SetDirection(SHUTDOWN_PIN, GPIO_Direction::In);
 
+	while ( ( g_isRunning ) && (!gpiohandler::getSingleton()->ReadGPIO(SHUTDOWN_PIN)) )
+	{
+		// Wait for the shutdown pin to be HIGH before continuing
+		// This stop the system shutting down if the UPSPico isn't connected
+		sleep( 1 );
+	}
+
 	while (g_isRunning)
 	{
 		gpiohandler::getSingleton()->WriteGPIO(PULSE_PIN, true);
