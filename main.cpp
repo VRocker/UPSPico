@@ -33,7 +33,8 @@ int main()
 		usleep(250000);
 		gpiohandler::getSingleton()->WriteGPIO(PULSE_PIN, false);
 
-		if (gpiohandler::getSingleton()->ReadGPIO(SHUTDOWN_PIN))
+		// Pin gets pulled low when a shutdown is to be executed
+		if (!gpiohandler::getSingleton()->ReadGPIO(SHUTDOWN_PIN))
 		{
 			// UPS is telling us to shutdown, execute our custom script
 			system(SHUTDOWN_SCRIPT);
