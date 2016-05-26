@@ -2,6 +2,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <unistd.h>
 #include <sys/mman.h>
 
@@ -87,7 +88,7 @@ void gpiohandler::SetupIO()
 
 	if (m_gpioMap == MAP_FAILED)
 	{
-		fprintf(stderr, "mmap error: %d\n", (int)m_gpioMap);
+		fprintf(stderr, "mmap error: %d\n", (uintptr_t)m_gpioMap);
 		return;
 	}
 
