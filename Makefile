@@ -1,7 +1,15 @@
 OBJS=gpiohandler.o main.o
 
-CXXFLAGS+=-std=c++11
+CXXFLAGS+=-std=c++11 -O3
 BIN=upspico.bin
+
+BUILDCC ?= $(CC)
+BUILDCXX ?= $(CXX)
+BUILDAR ?= $(AR)
+
+ifdef OUTBINDIR
+	$CPTOBIN=cp $@ $(OUTBINDIR)
+endif
 
 all: $(BIN) $(LIB)
 
@@ -15,7 +23,7 @@ all: $(BIN) $(LIB)
 
 %.bin: $(OBJS)
 	$(BUILDCXX) -o $@ -Wl,--whole-archive $(OBJS) $(LDFLAGS) -Wl,--no-whole-archive -rdynamic
-	cp $@ $(OUTPUTDIR)/bin/
+	$($CPTOBIN)	
 
 %.a: $(OBJS)
 	$(BUILDAR) r $@ $^
